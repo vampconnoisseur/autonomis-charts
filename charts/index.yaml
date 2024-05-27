@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  autonomis-charts:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-27T11:10:13.555696+05:30"
+    description: A Helm chart for deploying autonomis application.
+    digest: 13fa4d6fba587a31e63ecb232f72da1fb75e8fa6e1dd8a59258459046f566d0e
+    name: autonomis-charts
+    type: application
+    urls:
+    - autonomis-charts-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-27T11:10:13.554864+05:30"

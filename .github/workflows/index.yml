@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: us-east-1
-      CLUSTER_NAME: autonomis-cluster
+      CLUSTER_NAME: autoletics-eks
       GITHUB_ACTION_ROLE_ARN: ${{ secrets.ACTION_ROLE_ARN }}
     steps:
       - uses: actions/checkout@v3

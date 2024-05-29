@@ -28,4 +28,4 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           cluster-name: ${{ env.CLUSTER_NAME }}
           name: ${{env.HELM_RELEASE}}
-          chart-path: charts/autonomis-charts/templates
+          chart-path: charts/autonomis-charts

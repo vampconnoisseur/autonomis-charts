@@ -1,5 +1,5 @@
 name: deploy
-on: workflow_dispatch
+on: push
 
 permissions:
   id-token: write
@@ -37,4 +37,4 @@ jobs:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
           plugins: "https://github.com/jkroepke/helm-secrets"
-          command: helm secrets upgrade autonomis --install --wait charts/autonomis-charts -f charts/autonomis-charts/values.yml
+          command: helm secrets upgrade autonomis --install --wait charts/autonomis-charts -f charts/autonomis-charts/values.yaml

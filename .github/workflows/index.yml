@@ -14,7 +14,7 @@ jobs:
         run: echo ${{ secrets.ACTION_ROLE_ARN }}
 
       - name: AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.ACTION_ROLE_ARN }}
           role-session-name: ci-run-${{ github.run_id }}

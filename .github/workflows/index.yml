@@ -7,14 +7,13 @@ jobs:
     env:
       AWS_REGION: us-east-1
       CLUSTER_NAME: autoletics-eks
-      GITHUB_ACTION_ROLE_ARN: ${{ secrets.ACTION_ROLE_ARN }}
     steps:
       - uses: actions/checkout@v3
 
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ env.GITHUB_ACTION_ROLE_ARN }}
+          role-to-assume: ${{ secrets.ACTION_ROLE_ARN }}
           role-session-name: ci-run-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
 

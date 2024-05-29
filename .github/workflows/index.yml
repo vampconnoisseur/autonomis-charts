@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Test Secret Access (Remove before commit)
+        run: echo ${{ secrets.ACTION_ROLE_ARN }}
+
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

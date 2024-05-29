@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: autoletics-secret
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2YW1wY29ubm9pc3NldXIiLCJwYXNzd29yZCI6ImhhcnZlc3RpbmdUb29sNyIsImVtYWlsIjoidmFtcGNvbm5vaXNzZXVyQGdtYWlsLmNvbSIsImF1dGgiOiJkbUZ0Y0dOdmJtNXZhWE56WlhWeU9taGhjblpsYzNScGJtZFViMjlzTnc9PSJ9fX0=
-type: kubernetes.io/dockerconfigjson

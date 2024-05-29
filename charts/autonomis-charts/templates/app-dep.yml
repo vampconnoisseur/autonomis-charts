@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoletics-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoletics-app
+  template:
+    metadata:
+      labels:
+        app: autoletics-app
+    spec:
+      containers:
+        - name: autoletics-app
+          image: vampconnoisseur/autonomis
+          ports:
+            - name: app-port
+              containerPort: 3000
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '512Mi'
+            limits:
+              cpu: '500m'
+              memory: '1Gi'
+      imagePullSecrets:
+        - name: autoletics-secret

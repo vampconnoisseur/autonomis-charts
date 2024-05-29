@@ -1,0 +1,34 @@
+name: deploy
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      CLUSTER_NAME: autonomis-cluster
+      GITHUB_ACTION_ROLE_ARN: ${{ secrets.ACTION_ROLE_ARN }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ env.GITHUB_ACTION_ROLE_ARN }}
+          role-session-name: ci-run-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: kubeconfig
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}  --kubeconfig ./kubeconfig
+          echo 'KUBE_CONFIG_DATA<<EOF' >> $GITHUB_ENV
+          echo $(cat ./kubeconfig | base64) >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: helm deploy
+        uses: koslib/helm-eks-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+        with:
+          plugins: "https://github.com/jkroepke/helm-secrets"
+          command: helm secrets upgrade autonomis --install --wait charts/autonomis-charts -f charts/autonomis-charts/values.yml

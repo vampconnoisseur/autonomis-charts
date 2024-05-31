@@ -5,7 +5,7 @@ metadata:
 spec:
   destination:
     namespace: argocd
-    server: {{ .Values.api_server }}
+    server: https://kubernetes.default.svc
   source:
     repoURL: https://github.com/vampconnoisseur/autonomis-charts
     targetRevision: HEAD

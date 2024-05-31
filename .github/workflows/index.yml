@@ -99,7 +99,7 @@ jobs:
       - name: Terraform Apply with Output Capture (API Server Endpoint)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          output_value=$(terraform apply -auto-approve -input=false -no-color | grep "API Server Endpoint" | awk '{print $NF}')
+          output_value=$(terraform apply -auto-approve -input=false -no-color | grep "API_Server_Endpoint" | awk '{print $NF}')
           export API_SERVER_ENDPOINT="$output_value"
 
       - name: Install Autonomis Helm Chart

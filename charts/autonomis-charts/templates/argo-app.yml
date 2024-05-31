@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 env:
   - name: MY_ENV_VAR
-    value: { { .Values.api_server } }
+    value: "{{ .Values.api_server }}"
 metadata:
   name: autonomis
   namespace: argocd

@@ -4,7 +4,7 @@ metadata:
   name: autonomis
 spec:
   destination:
-    namespace: default
+    namespace: argocd
     server: "https://kubernetes.default.svc"
   source:
     repoURL: "{{.Values.api_server}}"

@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+env:
+  - name: MY_ENV_VAR
+    value: { { .Values.api_server } }
+metadata:
+  name: autonomis
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/vampconnoisseur/autonomis-charts
+  destination:
+    server: MY_ENV_VAR
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+    selfHeal: true

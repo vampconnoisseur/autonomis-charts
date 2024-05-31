@@ -1,6 +1,7 @@
 # Default values for autoletics-charts.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+api_server: ""
 
 replicaCount: 1
 

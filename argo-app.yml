@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: autonomis
+spec:
+  destination:
+    namespace: default
+    server: "https://kubernetes.default.svc"
+  source:
+    repoURL: "https://github.com/vampconnoisseur/autonomis-charts"
+    targetRevision: HEAD
+    path: charts/autonomis-charts
+  project: default

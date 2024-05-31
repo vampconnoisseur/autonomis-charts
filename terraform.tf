@@ -31,7 +31,11 @@ terraform {
     }
   }
 
-  backend "s3" {}
+  backend "s3" {
+    bucket = "autoletics-bucket-eks"
+    key    = "state/terraform-jaiditya.tfstate"
+    region = "us-east-1"
+  }
 
   required_version = "~> 1.8.2"
 }

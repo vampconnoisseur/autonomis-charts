@@ -9,7 +9,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/vampconnoisseur/autonomis-charts
+    repoURL: https://github.com/vampconnoisseur/autonomis-charts/tree/main/charts/autonomis-charts
+    targetRevision: HEAD
   destination:
     server: MY_ENV_VAR
     namespace: default

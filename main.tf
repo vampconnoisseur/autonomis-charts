@@ -57,21 +57,21 @@ resource "aws_iam_role_policy" "test_policy" {
   })
 }
 
-resource "aws_eks_access_entry" "example" {
-  cluster_name  = module.eks.cluster_name
-  principal_arn = aws_iam_role.github_action_role.arn
-  type          = "STANDARD"
-}
+# resource "aws_eks_access_entry" "example" {
+#   cluster_name  = module.eks.cluster_name
+#   principal_arn = aws_iam_role.github_action_role.arn
+#   type          = "STANDARD"
+# }
 
-resource "aws_eks_access_policy_association" "example" {
-  cluster_name  = module.eks.cluster_name
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-  principal_arn = aws_iam_user.github_action_role.arn
+# resource "aws_eks_access_policy_association" "example" {
+#   cluster_name  = module.eks.cluster_name
+#   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+#   principal_arn = aws_iam_user.github_action_role.arn
 
-  access_scope {
-    type = "cluster"
-  }
-}
+#   access_scope {
+#     type = "cluster"
+#   }
+# }
 
 # resource "aws_iam_role" "ebs_csi_driver_role" {
 #   name = "eks-ebs-csi-driver-role"

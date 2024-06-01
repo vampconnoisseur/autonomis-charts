@@ -28,6 +28,23 @@ module "eks" {
     }
   }
 
+  access_entries = {
+    github_role = {
+      kubernetes_groups = []
+      principal_arn     = "${aws_iam_role.github_action_role.arn}"
+
+      policy_associations = {
+        example = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            namespaces = ["default"]
+            type       = "namespace"
+          }
+        }
+      }
+    }
+  }
+
   tags = {
     Environment = "prod"
     Terraform   = "true"

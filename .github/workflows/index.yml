@@ -114,11 +114,6 @@ jobs:
           name: ${{env.HELM_RELEASE}}
           chart-path: charts/autonomis-charts
 
-      - name: Update kubeconfig
-        run: aws eks update-cluster-config --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }} > kubeconfig
-        env:
-          KUBECONFIG: ./kubeconfig
-
       - uses: azure/setup-kubectl@v3
 
       - name: Apply configuration from argocd.yml

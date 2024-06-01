@@ -27,87 +27,91 @@ jobs:
           role-session-name: ci-run-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # - name: Setup Terraform
-      #   uses: hashicorp/setup-terraform@v3.1.1
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3.1.1
 
-      # - name: Terraform fmt
-      #   id: fmt
-      #   run: terraform fmt -check
-      #   continue-on-error: true
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
 
-      # - name: Terraform Init
-      #   id: init
-      #   env:
-      #     AWS_BUCKET_NAME: autoletics-bucket-eks
-      #     AWS_BUCKET_KEY_NAME: state/terraform-${{env.CLIENT_NAME}}.tfstate
-      #   run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
+      - name: Terraform Init
+        id: init
+        env:
+          AWS_BUCKET_NAME: autoletics-bucket-eks
+          AWS_BUCKET_KEY_NAME: state/terraform-${{env.CLIENT_NAME}}.tfstate
+        run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
 
-      # - name: Terraform Validate
-      #   id: validate
-      #   run: terraform validate -no-color
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
 
-      # - name: Terraform Plan
-      #   id: plan
-      #   run: terraform plan -no-color
-      #   if: github.event_name == 'pull_request'
-      #   continue-on-error: true
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
 
-      # - uses: actions/github-script@v6
-      #   if: github.event_name == 'pull_request'
-      #   env:
-      #     PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-      #       #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-      #       #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-      #       <details><summary>Validation Output</summary>
+      - uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        env:
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            <details><summary>Validation Output</summary>
 
-      #       \`\`\`\n
-      #       ${{ steps.validate.outputs.stdout }}
-      #       \`\`\`
+            \`\`\`\n
+            ${{ steps.validate.outputs.stdout }}
+            \`\`\`
 
-      #       </details>
+            </details>
 
-      #       #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-      #       <details><summary>Show Plan</summary>
+            <details><summary>Show Plan</summary>
 
-      #       \`\`\`\n
-      #       ${process.env.PLAN}
-      #       \`\`\`
+            \`\`\`\n
+            ${process.env.PLAN}
+            \`\`\`
 
-      #       </details>
+            </details>
 
-      #       *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+            *Pushed by: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: output
-      #       })
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
 
-      # - name: Terraform Plan Status
-      #   if: steps.plan.outcome == 'failure'
-      #   run: exit 1
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
 
-      # - name: Terraform Apply with Output Capture (API Server Endpoint)
-      #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   run: |
-      #     output_value=$(terraform apply -auto-approve -input=false -no-color | grep "API_Server_Endpoint" | awk '{print $NF}')
-      #     export API_SERVER_ENDPOINT="$output_value"
+      - name: Terraform Apply with Output Capture (API Server Endpoint)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          output_value=$(terraform apply -auto-approve -input=false -no-color | grep "github_action_role" | awk '{print $NF}')
+          export GITHUB_ACTIONS_ROLE_ARN="$output_value"
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{env.GITHUB_ACTIONS_ROLE_ARN}}
+          role-session-name: ci-run-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Install Autonomis Helm Chart
         uses: bitovi/github-actions-deploy-eks-helm@v1.2.9
         with:
-          aws-access-key-id: ${{secrets.ACCESS_KEY}}
-          aws-secret-access-key: ${{secrets.SECRET_KEY}}
           aws-region: ${{ env.AWS_REGION }}
           cluster-name: ${{ env.CLUSTER_NAME }}
           name: ${{env.HELM_RELEASE}}
-          values: api_server=${{env.API_SERVER_ENDPOINT}}
           chart-path: charts/autonomis-charts
 
       # - name: Install Airbyte Helm Chart

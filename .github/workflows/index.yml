@@ -113,14 +113,18 @@ jobs:
           cluster-name: ${{ env.CLUSTER_NAME }}
           name: ${{env.HELM_RELEASE}}
           chart-path: charts/autonomis-charts
+          namespace: autonomis
 
-      - uses: azure/setup-kubectl@v3
+      - name: Configure Kubernetes client
+        uses: silverlyra/setup-aws-eks@v0.1.1
+        with:
+          cluster: ${{ env.CLUSTER_NAME }}
 
-      - name: Apply configuration from argocd.yml
-        run: kubectl apply -f argocd.yml
-
-      - name: Apply configuration from argo-app.yml
-        run: kubectl apply -f argo-app.yml
+      - name: Deploy argocd
+        run: |
+          kubectl create namespace argocd
+          kubectl apply -f argo/argocd.yaml -n argocd
+          kubectl apply -f argo/argo-app.yaml -n argocd
 
       # - name: Install Airbyte Helm Chart
       #   uses: bitovi/github-actions-deploy-eks-helm@v1.2.9

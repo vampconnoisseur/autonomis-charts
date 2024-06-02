@@ -10,4 +10,10 @@ spec:
     repoURL: https://github.com/vampconnoisseur/autonomis-charts
     targetRevision: HEAD
     path: charts/autonomis-charts
+    directory:
+      recurse: true
   project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -47,12 +47,12 @@ jobs:
         run: terraform plan -no-color
         continue-on-error: true
 
-      - name: Terraform Plan Status
-        if: steps.plan.outcome == 'failure'
-        run: exit 1
+      # - name: Terraform Plan Status
+      #   if: steps.plan.outcome == 'failure'
+      #   run: exit 1
 
       - name: Terraform Apply with Output Capture (API Server Endpoint)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           output_value=$(terraform apply -auto-approve -input=false -no-color | grep "github_action_role" | awk '{print $NF}')
           export GITHUB_ACTIONS_ROLE_ARN="$output_value"

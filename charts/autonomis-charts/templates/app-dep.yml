@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: autoletics-app
-          image: vampconnoisseur/autonomis:latest
+          image: vampconnoisseur/autonomis:11
           ports:
             - name: app-port
               containerPort: 3000

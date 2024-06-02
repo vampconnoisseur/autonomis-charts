@@ -81,8 +81,8 @@ jobs:
       - name: Deploy argocd
         run: |
           kubectl create namespace argocd
-          kubectl apply -f argo/argocd.yaml -n argocd
-          kubectl apply -f argo/argo-app.yaml -n argocd
+          kubectl apply -f argo/argocd.yml -n argocd
+          kubectl apply -f argo/argo-app.yml -n argocd
 
       # - name: Install Airbyte Helm Chart
       #   uses: bitovi/github-actions-deploy-eks-helm@v1.2.9

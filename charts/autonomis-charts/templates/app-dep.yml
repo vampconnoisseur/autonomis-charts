@@ -1,27 +1,27 @@
-apiVersion:14/v1
-kind:14
-metadata:14
-  name:14
-spec:14
-  replicas:14
-  selector:14
-    matchLabels:14
-      app:14
-  template:14
-    metadata:14
-      labels:14
-        app:14
-    spec:14
-      containers:14
-        - name:14
-          image:14/autonomis:14
-          ports:14
-            - name:14
-              containerPort:14
-          resources:14
-            requests:14
-              cpu:14
-              memory:14
-            limits:14
-              cpu:14
-              memory:14
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoletics-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: autoletics-app
+  template:
+    metadata:
+      labels:
+        app: autoletics-app
+    spec:
+      containers:
+        - name: autoletics-app
+          image: vampconnoisseur/autonomis:14
+          ports:
+            - name: app-port
+              containerPort: 3000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
